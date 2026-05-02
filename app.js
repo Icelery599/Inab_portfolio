@@ -79,28 +79,23 @@
     // initial filter all visible
     filterProjects('all');
 
-    // --- CONTACT FORM VALIDATION + submission simulation ---
+    // --- CONTACT FORM VALIDATION (server handles submission) ---
     const contactForm = document.getElementById('contactForm');
     const feedbackDiv = document.getElementById('form-feedback');
     if(contactForm) {
       contactForm.addEventListener('submit', (e) => {
-        e.preventDefault();
         const name = document.getElementById('name').value.trim();
         const email = document.getElementById('email').value.trim();
         const message = document.getElementById('message').value.trim();
         if(!name || !email || !message) {
+          e.preventDefault();
           feedbackDiv.innerHTML = '<span style="color:#e11d48;"><i class="fas fa-exclamation-circle"></i> All fields are required.</span>';
           return;
         }
         if(!email.includes('@') || !email.includes('.')) {
+          e.preventDefault();
           feedbackDiv.innerHTML = '<span style="color:#e11d48;"><i class="fas fa-envelope"></i> Please enter a valid email.</span>';
-          return;
         }
-        feedbackDiv.innerHTML = '<span style="color:#16a34a;"><i class="fas fa-check-circle"></i> Thank you! We’ll get back within 24h.</span>';
-        contactForm.reset();
-        setTimeout(() => {
-          feedbackDiv.innerHTML = '';
-        }, 4000);
       });
     }
 
