@@ -39,7 +39,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && ($_POST['action'] ?? '') === 'conta
         <li><a href="#about" class="nav-link">About</a></li>
         <li><a href="#services" class="nav-link">Services</a></li>
         <li><a href="#portfolio" class="nav-link">Portfolio</a></li>
-        <li><a href="#contact" class="nav-link">Contact</a></li><li><a href="login.php">Admin</a></li>
+        <li><a href="#contact" class="nav-link">Contact</a></li>
       </ul>
     </div>
   </div>
@@ -118,7 +118,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && ($_POST['action'] ?? '') === 'conta
         <?php if ($projects): foreach($projects as $project): ?>
         <div class="portfolio-item" data-category="<?= htmlspecialchars($project['category']) ?>">
           <img class="portfolio-img" src="<?= htmlspecialchars($project['image']) ?>" alt="project">
-          <div class="portfolio-info"><h3><?= htmlspecialchars($project['title']) ?></h3><div class="portfolio-cat"><?= htmlspecialchars(ucfirst($project['category'])) ?></div><p><?= htmlspecialchars($project['description']) ?></p></div>
+          <div class="portfolio-info"><h3><?= htmlspecialchars($project['title']) ?></h3><div class="portfolio-cat"><?= htmlspecialchars(ucfirst($project['category'])) ?></div><p><?= htmlspecialchars($project['description']) ?></p><?php if (!empty($project['url'])): ?><a class="project-link" href="<?= htmlspecialchars($project['url']) ?>" target="_blank" rel="noopener">Visit Project</a><?php endif; ?></div>
         </div>
         <?php endforeach; else: ?>
         <div class="portfolio-item" data-category="web"><img class="portfolio-img" src="https://picsum.photos/id/1/400/260" alt="project"><div class="portfolio-info"><h3>Fintech Dashboard</h3><div class="portfolio-cat">Web Development</div><p>Interactive platform with real-time analytics.</p></div></div>
