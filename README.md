@@ -9,7 +9,6 @@ The portfolio now uses a MySQL database for admin-managed content and user accou
 - Services shown on the homepage
 - Portfolio projects shown on the homepage
 - Admin/editor users
-- Product and service update posts
 
 ### Database setup
 
@@ -30,4 +29,4 @@ The first run seeds a default administrator if no admin exists:
 - Username: `admin`
 - Password: `admin123`
 
-Change the seeded password immediately after your first login from the **Users** section in `admin.php`.
+Visit `admin/` after logging in. Change the seeded password immediately after your first login from the **Users** section in `admin/users.php`.

@@ -2,7 +2,7 @@
 require_once __DIR__ . '/auth.php';
 
 if (is_admin_logged_in()) {
-    header('Location: admin.php');
+    header('Location: admin/');
     exit;
 }
 
@@ -11,7 +11,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $username = trim($_POST['username'] ?? '');
     $password = trim($_POST['password'] ?? '');
     if (attempt_login($username, $password)) {
-        header('Location: admin.php');
+        header('Location: admin/');
         exit;
     }
     $error = 'Invalid username or password.';
