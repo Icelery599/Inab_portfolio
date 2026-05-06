@@ -1,6 +1,8 @@
 <?php
 require_once __DIR__ . '/data_store.php';
 
+initialize_database();
+
 $services = read_collection('services');
 $projects = read_collection('projects');
 $posts = read_collection('posts');
@@ -97,7 +99,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && ($_POST['action'] ?? '') === 'conta
       <div class="section-title"><span>Our core services</span></div>
       <div class="services-grid">
         <?php if ($services): foreach($services as $service): ?>
-          <div class="service-card"><div class="service-icon"><i class="fas fa-code"></i></div><h3><?= htmlspecialchars($service['title']) ?></h3><p><?= htmlspecialchars($service['description']) ?></p></div>
+          <div class="service-card"><div class="service-icon"><i class="fas <?= htmlspecialchars($service['icon'] ?? 'fa-code') ?>"></i></div><h3><?= htmlspecialchars($service['title']) ?></h3><p><?= htmlspecialchars($service['description']) ?></p></div>
         <?php endforeach; else: ?>
           <div class="service-card"><div class="service-icon"><i class="fas fa-code"></i></div><h3>Web Development</h3><p>High-performance websites with modern stacks, blazing fast & responsive.</p></div>
         <?php endif; ?>
