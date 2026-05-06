@@ -573,3 +573,43 @@
 .user-card {
   border-left: 4px solid var(--orange);
 }
+
+.admin-actions a.active {
+    text-decoration: underline;
+    text-underline-offset: 4px;
+}
+
+.admin-card-grid {
+    display: grid;
+    gap: 16px;
+    grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+    margin-top: 20px;
+}
+
+.admin-card-link {
+    background: #fff;
+    border: 1px solid #e5e7eb;
+    border-radius: 14px;
+    box-shadow: 0 8px 22px rgba(15, 23, 42, 0.08);
+    color: #0f172a;
+    display: grid;
+    gap: 8px;
+    padding: 18px;
+    text-decoration: none;
+    transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
+
+.admin-card-link:hover {
+    box-shadow: 0 12px 28px rgba(15, 23, 42, 0.14);
+    transform: translateY(-2px);
+}
+
+.admin-card-link span {
+    color: var(--primary-color);
+    font-weight: 700;
+}
+
+.admin-card-link small {
+    color: #475569;
+    line-height: 1.5;
+}
