@@ -15,7 +15,7 @@
 <main class="container admin-dashboard">
   <div class="admin-header">
     <h1><?= h($pageTitle ?? 'Admin Dashboard') ?></h1>
-    <p>Manage users, projects, and services from dedicated admin pages.</p>
+    <p>Back-end controls for users, services, and projects connected to the portfolio database.</p>
     <div class="admin-actions">
       Signed in as <?= h($currentUser['username'] ?? 'admin') ?> ·
       <a href="<?= admin_page_url('dashboard') ?>" class="<?= ($activePage ?? '') === 'dashboard' ? 'active' : '' ?>">Dashboard</a> ·
