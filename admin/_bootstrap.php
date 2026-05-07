@@ -9,16 +9,20 @@ $currentUser = current_admin_user();
 $notice = '';
 $error = '';
 
-function h(mixed $value): string {
-    return htmlspecialchars((string) $value, ENT_QUOTES, 'UTF-8');
+function h($value): string {
+    return htmlspecialchars((string) ($value ?? ''), ENT_QUOTES, 'UTF-8');
 }
 
-function checked(bool $value): string {
-    return $value ? 'checked' : '';
+function checked($value): string {
+    return (bool) $value ? 'checked' : '';
 }
 
-function selected(string $actual, string $expected): string {
-    return $actual === $expected ? 'selected' : '';
+function selected($actual, string $expected): string {
+    return (string) $actual === $expected ? 'selected' : '';
+}
+
+function admin_role_from_post(): string {
+    return ($_POST['role'] ?? '') === 'admin' ? 'admin' : 'editor';
 }
 
 function admin_page_url(string $page): string {

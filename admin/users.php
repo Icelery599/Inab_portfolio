@@ -13,13 +13,13 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                 trim($_POST['username'] ?? ''),
                 trim($_POST['email'] ?? ''),
                 (string) ($_POST['password'] ?? ''),
-                $_POST['role'] === 'admin' ? 'admin' : 'editor',
+                admin_role_from_post(),
                 isset($_POST['is_active'])
             );
             $notice = 'User added successfully.';
         } elseif ($action === 'update_user') {
             $userId = (int) ($_POST['id'] ?? 0);
-            $role = $_POST['role'] === 'admin' ? 'admin' : 'editor';
+            $role = admin_role_from_post();
             $active = isset($_POST['is_active']);
 
             if ($currentUser !== null && $userId === (int) $currentUser['id']) {
