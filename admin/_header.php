@@ -15,12 +15,14 @@
 <main class="container admin-dashboard">
   <div class="admin-header">
     <h1><?= h($pageTitle ?? 'Admin Dashboard') ?></h1>
-    <p>Back-end controls for users, services, and projects connected to the portfolio database.</p>
+    <p>Back-end controls for public portfolio content, private messages, and admin users connected to the database.</p>
     <div class="admin-actions">
       Signed in as <?= h($currentUser['username'] ?? 'admin') ?> ·
       <a href="<?= admin_page_url('dashboard') ?>" class="<?= ($activePage ?? '') === 'dashboard' ? 'active' : '' ?>">Dashboard</a> ·
       <a href="<?= admin_page_url('services') ?>" class="<?= ($activePage ?? '') === 'services' ? 'active' : '' ?>">Services</a> ·
       <a href="<?= admin_page_url('projects') ?>" class="<?= ($activePage ?? '') === 'projects' ? 'active' : '' ?>">Projects</a> ·
+      <a href="<?= admin_page_url('updates') ?>" class="<?= ($activePage ?? '') === 'updates' ? 'active' : '' ?>">Updates</a> ·
+      <a href="<?= admin_page_url('messages') ?>" class="<?= ($activePage ?? '') === 'messages' ? 'active' : '' ?>">Messages</a> ·
       <a href="<?= admin_page_url('users') ?>" class="<?= ($activePage ?? '') === 'users' ? 'active' : '' ?>">Users</a> ·
       <a href="../index.php">View Site</a> ·
       <a href="../logout.php">Logout</a>

@@ -67,6 +67,52 @@ function read_collection(string $name): array {
     return $stmt->fetchAll();
 }
 
+
+function read_public_collection(string $name): array {
+    $allowedTables = ['services', 'projects', 'posts'];
+    if (!in_array($name, $allowedTables, true)) {
+        throw new InvalidArgumentException('Unsupported public collection requested.');
+    }
+
+    return read_collection($name);
+}
+
+function public_project_categories(array $projects): array {
+    $categories = [];
+    foreach ($projects as $project) {
+        $category = trim((string) ($project['category'] ?? ''));
+        if ($category === '') {
+            continue;
+        }
+
+        $slug = category_slug($category);
+        $categories[$slug] = category_label($category);
+    }
+
+    asort($categories);
+    return $categories;
+}
+
+function category_slug(string $category): string {
+    $slug = strtolower(trim($category));
+    $slug = preg_replace('/[^a-z0-9]+/', '-', $slug) ?? '';
+    $slug = trim($slug, '-');
+
+    return $slug === '' ? 'general' : $slug;
+}
+
+function category_label(string $category): string {
+    $label = trim(str_replace(['-', '_'], ' ', $category));
+    return $label === '' ? 'General' : ucwords($label);
+}
+
+function whatsapp_chat_url(string $message): string {
+    $number = preg_replace('/\D+/', '', env_value('WHATSAPP_NUMBER', '')) ?? '';
+    $baseUrl = $number === '' ? 'https://wa.me/' : 'https://wa.me/' . $number;
+
+    return $baseUrl . '?text=' . rawurlencode($message);
+}
+
 function add_item(string $name, array $payload): int {
     $columnsByTable = [
         'services' => ['title', 'description', 'icon'],
