@@ -8,7 +8,9 @@ The portfolio now uses a MySQL database for admin-managed content and user accou
 
 - Services shown on the homepage
 - Portfolio projects shown on the homepage
-- Admin/editor users
+- Product/service updates shown below the public portfolio grid
+- Contact messages submitted from the public form (private to the dashboard)
+- Admin/editor users (private to the dashboard and never rendered on the public portfolio)
 
 ### Database setup
 
@@ -23,10 +25,11 @@ The portfolio now uses a MySQL database for admin-managed content and user accou
 | `DB_NAME` | `inab_portfolio` |
 | `DB_USER` | `root` |
 | `DB_PASS` | empty string |
+| `WHATSAPP_NUMBER` | empty string; set this to your international WhatsApp number, for example `2348012345678` |
 
 The first run seeds a default administrator if no admin exists:
 
 - Username: `admin`
 - Password: `admin123`
 
-Visit `admin/` after logging in. Change the seeded password immediately after your first login from the **Users** section in `admin/users.php`.
+Visit `admin/` after logging in. Change the seeded password immediately after your first login from the **Users** section in `admin/users.php`. Use **Services**, **Projects**, and **Updates** to control public portfolio content; **Users** and **Messages** stay private inside the admin dashboard.

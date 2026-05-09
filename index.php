@@ -3,9 +3,12 @@ require_once __DIR__ . '/data_store.php';
 
 initialize_database();
 
-$services = read_collection('services');
-$projects = read_collection('projects');
-$posts = read_collection('posts');
+$services = read_public_collection('services');
+$projects = read_public_collection('projects');
+$posts = read_public_collection('posts');
+$projectCategories = public_project_categories($projects);
+$whatsappMessage = 'Hello Inab Computer, I viewed your portfolio and would like to discuss a digital service.';
+$whatsappUrl = whatsapp_chat_url($whatsappMessage);
 $feedback = '';
 
 if ($_SERVER['REQUEST_METHOD'] === 'POST' && ($_POST['action'] ?? '') === 'contact') {
@@ -55,8 +58,11 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && ($_POST['action'] ?? '') === 'conta
         <div class="hero-badge"><i class="fas fa-chart-line"></i> Next-gen digital agency</div>
         <h1>Ideas that <span class="hero-highlight">ignite</span> <br> brands & growth</h1>
         <p>Witness the next generation tech with Inab bringing a world class businesses virtually.</p>
-        <a href="#portfolio" class="btn btn-primary"><i class="fas fa-arrow-right"></i> Explore work</a>
-        <a href="#contact" class="btn btn-outline" style="margin-left: 1rem;">Let's talk</a>
+        <div class="hero-actions">
+          <a href="#portfolio" class="btn btn-primary"><i class="fas fa-arrow-right"></i> Explore work</a>
+          <a href="#contact" class="btn btn-outline">Let's talk</a>
+          <a href="<?= htmlspecialchars($whatsappUrl) ?>" class="btn btn-whatsapp" target="_blank" rel="noopener"><i class="fab fa-whatsapp"></i> WhatsApp us</a>
+        </div>
       </div>
       <div class="hero-image">
         <img src="https://picsum.photos/id/26/500/400" alt="hero visual" style="border-radius: 32px;">
@@ -111,22 +117,39 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && ($_POST['action'] ?? '') === 'conta
   <section id="portfolio" class="scroll-margin">
     <div class="container">
       <div class="section-title"><span>Featured projects</span></div>
-      <div class="filter-buttons" id="filterButtons">
-        <button class="filter-btn active" data-filter="all">All</button>
-        <button class="filter-btn" data-filter="web">Web Development</button>
-        <button class="filter-btn" data-filter="branding">Branding</button>
-      </div>
+      <?php if ($projectCategories !== []): ?>
+        <div class="filter-buttons" id="filterButtons">
+          <button class="filter-btn active" data-filter="all">All</button>
+          <?php foreach ($projectCategories as $slug => $label): ?>
+            <button class="filter-btn" data-filter="<?= htmlspecialchars($slug) ?>"><?= htmlspecialchars($label) ?></button>
+          <?php endforeach; ?>
+        </div>
+      <?php endif; ?>
       <div class="portfolio-grid" id="portfolioGrid">
         <?php if ($projects): foreach($projects as $project): ?>
-        <div class="portfolio-item" data-category="<?= htmlspecialchars($project['category']) ?>">
-          <img class="portfolio-img" src="<?= htmlspecialchars($project['image']) ?>" alt="project">
-          <div class="portfolio-info"><h3><?= htmlspecialchars($project['title']) ?></h3><div class="portfolio-cat"><?= htmlspecialchars(ucfirst($project['category'])) ?></div><p><?= htmlspecialchars($project['description']) ?></p><?php if (!empty($project['url'])): ?><a class="project-link" href="<?= htmlspecialchars($project['url']) ?>" target="_blank" rel="noopener">Visit Project</a><?php endif; ?></div>
+        <div class="portfolio-item" data-category="<?= htmlspecialchars(category_slug((string) $project['category'])) ?>">
+          <img class="portfolio-img" src="<?= htmlspecialchars($project['image']) ?>" alt="<?= htmlspecialchars($project['title']) ?> project preview">
+          <div class="portfolio-info">
+            <h3><?= htmlspecialchars($project['title']) ?></h3>
+            <div class="portfolio-cat"><?= htmlspecialchars(category_label((string) $project['category'])) ?></div>
+            <p><?= htmlspecialchars($project['description']) ?></p>
+            <?php if (!empty($project['url'])): ?><a class="project-link" href="<?= htmlspecialchars($project['url']) ?>" target="_blank" rel="noopener">Visit Project</a><?php endif; ?>
+          </div>
         </div>
         <?php endforeach; else: ?>
         <div class="portfolio-item" data-category="web"><img class="portfolio-img" src="https://picsum.photos/id/1/400/260" alt="project"><div class="portfolio-info"><h3>Fintech Dashboard</h3><div class="portfolio-cat">Web Development</div><p>Interactive platform with real-time analytics.</p></div></div>
         <?php endif; ?>
       </div>
-      <div style="margin-top:24px;"><h3>Latest Product & Service Updates</h3><?php foreach($posts as $post): ?><article style="margin:10px 0;"><strong><?= htmlspecialchars($post['title']) ?></strong><p><?= htmlspecialchars($post['excerpt']) ?></p></article><?php endforeach; ?></div></div>
+      <?php if ($posts): ?>
+        <div class="updates-panel">
+          <h3>Latest Product & Service Updates</h3>
+          <div class="updates-grid">
+            <?php foreach($posts as $post): ?>
+              <article class="update-card"><strong><?= htmlspecialchars($post['title']) ?></strong><p><?= htmlspecialchars($post['excerpt']) ?></p></article>
+            <?php endforeach; ?>
+          </div>
+        </div>
+      <?php endif; ?>
     </div>
   </section>
 
@@ -139,7 +162,10 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && ($_POST['action'] ?? '') === 'conta
           <div class="form-group"><input type="text" id="name" name="name" placeholder="Full name" required></div>
           <div class="form-group"><input type="email" id="email" name="email" placeholder="Email address" required></div>
           <div class="form-group"><textarea rows="4" id="message" name="message" placeholder="Tell us about your project..." required></textarea></div>
-          <button type="submit" class="contact-btn"><i class="fas fa-paper-plane"></i> Send message</button>
+          <div class="contact-actions">
+            <button type="submit" class="contact-btn"><i class="fas fa-paper-plane"></i> Send message</button>
+            <a href="<?= htmlspecialchars($whatsappUrl) ?>" class="contact-btn whatsapp-contact" target="_blank" rel="noopener"><i class="fab fa-whatsapp"></i> Chat on WhatsApp</a>
+          </div>
           <div id="form-feedback"><?php if ($feedback): ?><span style="color:#16a34a;"><?= htmlspecialchars($feedback) ?></span><?php endif; ?></div>
         </form>
       </div>
@@ -158,6 +184,11 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && ($_POST['action'] ?? '') === 'conta
     <p>© 2025 Inab Computer. All visions brought to life.</p>
   </div>
 </footer>
+
+<a href="<?= htmlspecialchars($whatsappUrl) ?>" class="whatsapp-float" target="_blank" rel="noopener" aria-label="Chat with Inab Computer on WhatsApp">
+  <i class="fab fa-whatsapp"></i>
+  <span>Chat with us</span>
+</a>
 
 <script src="app.js"></script>
 </body>
